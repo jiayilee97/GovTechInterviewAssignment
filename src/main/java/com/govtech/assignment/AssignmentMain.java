@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(scanBasePackages = {"com.govtech.assignment"})
 @EnableJpaRepositories("com.govtech.assignment")
 @EntityScan("com.govtech.assignment")
-@ComponentScan("com.govtech.assignment.service")
+@ComponentScan("com.govtech.assignment")
 public class AssignmentMain {
     public static void main(String[] args) {
         SpringApplication.run(AssignmentMain.class, args);

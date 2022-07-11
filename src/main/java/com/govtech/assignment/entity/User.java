@@ -30,4 +30,9 @@ public class User {
 
     @Column(name = "salary", precision = 19, scale = 2)
     private BigDecimal salary;
+
+    public User(CsvToUser csvToUser) {
+        this.name = csvToUser.getName();
+        this.salary = csvToUser.getSalary();
+    }
 }
