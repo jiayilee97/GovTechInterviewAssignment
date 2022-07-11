@@ -1,5 +1,10 @@
 package com.govtech.assignment.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +15,10 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "user")
+@AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
