@@ -86,10 +86,20 @@ public class UserServiceImpl implements UserService {
             List<CsvToUser> csvToUsersList = cb.parse();
 
             for (CsvToUser csvToUser : csvToUsersList) {
+                User user = new User(csvToUser);
+
                 // salary must not be negative
-                if(csvToUser.getSalary().compareTo(BigDecimal.ZERO) >=0){
-                    userRepository.save(new User(csvToUser));
+                if(csvToUser.getSalary().compareTo(BigDecimal.ZERO) < 0){
+                    continue;
                 }
+
+                // replace record instead of insert, if name already exists
+                User existingUser = userRepository.findByName(csvToUser.getName());
+                if (null != existingUser) {
+                    user.setId(existingUser.getId());
+                }
+
+                userRepository.save(user);
             }
 
         } catch (IOException | NumberFormatException e) {

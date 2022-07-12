@@ -15,13 +15,21 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public DataLoader(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     public void run(ApplicationArguments args) {
-        userRepository.save(new User(1,"Lionel", BigDecimal.valueOf(1000)));
-        userRepository.save(new User(2,"Jack", BigDecimal.valueOf(2000)));
+        // pre-load database with seed data
+        String lionel = "Lionel";
+        String jack = "Jack";
+
+        // user 1
+        User newUser = new User(1,lionel, BigDecimal.valueOf(1000));
+        if (null == userRepository.findByName(newUser.getName())) {
+            userRepository.save(newUser);;
+        }
+
+        // user 2
+        newUser = new User(2,jack, BigDecimal.valueOf(2000));
+        if (null == userRepository.findByName(newUser.getName())) {
+            userRepository.save(newUser);;
+        }
     }
 }

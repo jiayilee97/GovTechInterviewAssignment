@@ -1,5 +1,6 @@
 package com.govtech.assignment.controller;
 
+import com.govtech.assignment.dto.ErrorResponseDto;
 import com.govtech.assignment.dto.UsersRequestDto;
 import com.govtech.assignment.dto.UsersResponseDto;
 import com.govtech.assignment.service.UserService;
@@ -19,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/upload")
-    public ResponseEntity<Object> upload(@RequestPart MultipartFile file) {
+    public ResponseEntity<?> upload(@RequestPart MultipartFile file) {
         String message = "";
         try {
             userService.upload(file);
@@ -27,7 +28,8 @@ public class UserController {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (Exception e) {
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+            ErrorResponseDto errorResponseDto = new ErrorResponseDto(message);
+            return new ResponseEntity<ErrorResponseDto>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

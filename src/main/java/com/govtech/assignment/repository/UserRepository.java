@@ -23,4 +23,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
         "u.salary <= ?2 AND " +
         "u.salary >= ?1 ")
     public List<User> getAllUsersSortBy(BigDecimal min, BigDecimal max, Sort sort);
+
+    public User findByName(String name);
 }
