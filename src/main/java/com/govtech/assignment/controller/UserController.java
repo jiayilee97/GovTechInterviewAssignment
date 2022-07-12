@@ -2,7 +2,6 @@ package com.govtech.assignment.controller;
 
 import com.govtech.assignment.dto.ErrorResponseDto;
 import com.govtech.assignment.dto.UsersRequestDto;
-import com.govtech.assignment.dto.UsersResponseDto;
 import com.govtech.assignment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +33,13 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public UsersResponseDto getUsers(@RequestBody UsersRequestDto usersRequestDto) {
-        return userService.getUsers(usersRequestDto);
+    public Object getUsers(@RequestBody UsersRequestDto usersRequestDto) {
+        try {
+            return userService.getUsers(usersRequestDto);
+        } catch (Exception e) {
+            String message = "Could not process request!";
+            ErrorResponseDto errorResponseDto = new ErrorResponseDto(message);
+            return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
