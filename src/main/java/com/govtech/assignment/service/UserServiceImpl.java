@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,16 +76,23 @@ public class UserServiceImpl implements UserService {
 
             CsvToBean<CsvToUser> cb = new CsvToBeanBuilder<CsvToUser>(br)
                 .withType(CsvToUser.class)
-                .withSkipLines(1)
+                .withSkipLines(0)
+                .withExceptionHandler(e -> {
+                    // parsing errors, e.g. salary contains non-digits
+                    throw e;
+                })
                 .build();
+
             List<CsvToUser> csvToUsersList = cb.parse();
 
             for (CsvToUser csvToUser : csvToUsersList) {
-                userRepository.save(new User(csvToUser));
+                // salary must not be negative
+                if(csvToUser.getSalary().compareTo(BigDecimal.ZERO) >=0){
+                    userRepository.save(new User(csvToUser));
+                }
             }
 
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+        } catch (IOException | NumberFormatException e) {
             throw e;
         }
     }
